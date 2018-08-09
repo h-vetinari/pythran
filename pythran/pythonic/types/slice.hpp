@@ -5,10 +5,6 @@
 
 #include "pythonic/__builtin__/None.hpp"
 
-#ifndef NDEBUG
-#include <boost/simd/function/bitofsign.hpp>
-#endif
-
 #include <cassert>
 #include <stdexcept>
 #include <ostream>
@@ -195,12 +191,10 @@ namespace types
     assert(!(upper.is_none() && lower.is_none()));
     long len;
     if (upper.is_none()) {
-      assert(boost::simd::bitofsign((long)step) !=
-             boost::simd::bitofsign((long)lower));
+      assert(std::signbit((long)step) != std::signbit((long)lower));
       len = -(long)lower;
     } else if (lower.is_none()) {
-      assert(boost::simd::bitofsign((long)step) ==
-             boost::simd::bitofsign((long)upper));
+      assert(std::signbit((long)step) == std::signbit((long)upper));
       len = upper;
     } else
       len = upper - lower;
